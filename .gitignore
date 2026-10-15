@@ -1,0 +1,44 @@
+# Data files (keep .gitkeep only)
+data/raw/*.csv
+data/bronze/
+data/silver/
+data/gold/
+data/predictions/
+data/streaming/
+data/checkpoints/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.venv-airflow/
+
+# Spark
+spark-warehouse/
+metastore_db/
+derby.log
+
+# Airflow
+airflow/airflow.db
+airflow/airflow.cfg
+airflow/airflow-webserver.pid
+airflow/logs/
+airflow/webserver_config.py
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Models (large files)
+data/models/
+
+# Misc
+*.log
+.gemini/

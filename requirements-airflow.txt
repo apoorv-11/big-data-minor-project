@@ -1,0 +1,4 @@
+# Airflow in a separate venv to avoid dependency conflicts.
+# Install with constraints: see Makefile target 'setup-airflow'.
+apache-airflow==2.10.3
+pyyaml==6.0.2

@@ -1,0 +1,100 @@
+# ============================================================
+# FraudShield Configuration
+# All paths relative to project root; resolved by config.py
+# ============================================================
+
+project:
+  name: "FraudShield"
+  root: "."  # resolved at runtime to absolute path
+
+# ---- Data Paths ----
+data:
+  raw_dir: "data/raw"
+  bronze_dir: "data/bronze"
+  silver_dir: "data/silver"
+  silver_rejects_dir: "data/silver_rejects"
+  gold_dir: "data/gold"
+  predictions_dir: "data/predictions"
+  streaming_dir: "data/streaming"
+  checkpoints_dir: "data/checkpoints"
+  models_dir: "data/models"
+
+# ---- Spark Settings ----
+spark:
+  app_name: "FraudShield"
+  master: "local[*]"
+  driver_memory: "4g"
+  shuffle_partitions: 20
+  # Kafka connector Maven coordinate (must match Spark version)
+  kafka_package: "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3"
+
+# ---- Kafka Settings ----
+kafka:
+  bootstrap_servers: "localhost:9092"
+  topic: "transactions"
+  # Producer replay settings
+  producer:
+    rate: 100        # messages per second
+    limit: 0         # 0 = no limit (send all rows from the replay slice)
+    start_step: 601  # replay from this step onwards (test set for live demo)
+
+# ---- Dataset Schema (PaySim) ----
+dataset:
+  csv_glob: "*.csv"
+  columns:
+    - { name: "step",             type: "integer" }
+    - { name: "type",             type: "string"  }
+    - { name: "amount",           type: "double"  }
+    - { name: "nameOrig",         type: "string"  }
+    - { name: "oldbalanceOrg",    type: "double"  }
+    - { name: "newbalanceOrig",   type: "double"  }
+    - { name: "nameDest",         type: "string"  }
+    - { name: "oldbalanceDest",   type: "double"  }
+    - { name: "newbalanceDest",   type: "double"  }
+    - { name: "isFraud",          type: "integer" }
+    - { name: "isFlaggedFraud",   type: "integer" }
+  valid_types: ["CASH_IN", "CASH_OUT", "DEBIT", "PAYMENT", "TRANSFER"]
+  max_step: 743
+
+# ---- ML Settings ----
+ml:
+  train_max_step: 600          # train on steps 1..600
+  test_min_step: 601           # test on steps 601..743
+  label_col: "isFraud"
+  # Class weight: weight for the minority (fraud) class
+  fraud_weight: 400            # ≈ 1 / fraud_rate
+  non_fraud_weight: 1
+  # Alert threshold (probability above this = fraud alert)
+  alert_threshold: 0.5
+  # Features to use (built in features_pyspark.py)
+  numeric_features:
+    - "amount"
+    - "oldbalanceOrg"
+    - "newbalanceOrig"
+    - "oldbalanceDest"
+    - "newbalanceDest"
+    - "hour_of_day"
+    - "day"
+    - "errorBalanceOrig"
+    - "errorBalanceDest"
+    - "txn_count_orig_last_24"
+    - "txn_amount_orig_last_24"
+    - "txn_count_dest_last_24"
+    - "txn_amount_dest_last_24"
+    - "steps_since_last_txn_orig"
+    - "dest_distinct_senders"
+    - "dest_total_inbound"
+    - "dest_fraud_inbound_count"
+  categorical_features:
+    - "type"
+
+# ---- Streaming Settings ----
+streaming:
+  trigger_interval: "10 seconds"
+  output_mode: "append"
+  checkpoint_location: "data/checkpoints/stream_score"
+
+# ---- Dashboard Settings ----
+dashboard:
+  port: 8501
+  refresh_interval: 5  # seconds for live tab auto-refresh
