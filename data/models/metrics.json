@@ -1,0 +1,57 @@
+{
+  "best_model": "RandomForest",
+  "all_results": {
+    "LogisticRegression": {
+      "PR-AUC": 0.6833,
+      "ROC-AUC": 0.9685,
+      "F1": 0.9395,
+      "Precision (weighted)": 0.9848,
+      "Recall (weighted)": 0.9072
+    },
+    "RandomForest": {
+      "PR-AUC": 1.0,
+      "ROC-AUC": 1.0,
+      "F1": 1.0,
+      "Precision (weighted)": 1.0,
+      "Recall (weighted)": 1.0
+    },
+    "GBTClassifier": {
+      "PR-AUC": 1.0,
+      "ROC-AUC": 1.0,
+      "F1": 1.0,
+      "Precision (weighted)": 1.0,
+      "Recall (weighted)": 1.0
+    }
+  },
+  "confusion_matrix": {
+    "actual_0_pred_0": 101973,
+    "actual_1_pred_1": 1592
+  },
+  "feature_importances": {
+    "amount": 0.097777,
+    "oldbalanceOrg": 0.074739,
+    "newbalanceOrig": 0.115663,
+    "oldbalanceDest": 0.015634,
+    "newbalanceDest": 0.030745,
+    "hour_of_day": 0.056835,
+    "day": 0.014811,
+    "errorBalanceOrig": 0.342372,
+    "errorBalanceDest": 0.030393,
+    "txn_count_orig_last_24": 0.0,
+    "txn_amount_orig_last_24": 0.0,
+    "txn_count_dest_last_24": 0.01074,
+    "txn_amount_dest_last_24": 0.004919,
+    "steps_since_last_txn_orig": 1e-05,
+    "dest_distinct_senders": 0.006557,
+    "dest_total_inbound": 0.039583,
+    "type_vec": 0.026578,
+    "feature_17": 0.036669,
+    "feature_18": 0.006944,
+    "feature_19": 0.087828,
+    "feature_20": 0.001203
+  },
+  "train_rows": 6259039,
+  "test_rows": 103565,
+  "train_max_step": 600,
+  "test_min_step": 601
+}

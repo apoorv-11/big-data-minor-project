@@ -1,44 +1,101 @@
-# Data files (keep .gitkeep only)
-data/raw/*.csv
-data/bronze/
-data/silver/
-data/gold/
-data/predictions/
-data/streaming/
-data/checkpoints/
+# ============================================================
+#  FraudShield .gitignore
+# ============================================================
 
-# Python
+# ---- Data Layers (Ignore all heavy generated data & raw CSVs) ----
+data/raw/*
+!data/raw/.gitkeep
+data/bronze/*
+!data/bronze/.gitkeep
+data/silver/*
+!data/silver/.gitkeep
+data/silver_features/*
+!data/silver_features/.gitkeep
+data/silver_rejects/*
+!data/silver_rejects/.gitkeep
+data/gold/*
+!data/gold/.gitkeep
+data/predictions/*
+!data/predictions/.gitkeep
+data/streaming/*
+!data/streaming/.gitkeep
+data/checkpoints/*
+!data/checkpoints/.gitkeep
+
+# Catch-all for any standalone parquet / data formats
+*.parquet
+*.parquet.crc
+*.crc
+*.csv
+*.zip
+*.tar.gz
+
+# ---- Machine Learning Models (Exclude large binary model directories) ----
+data/models/best_pipeline_model/
+data/models/**/metadata/
+data/models/**/data/
+data/models/**/*.parquet
+# Keep lightweight evaluation outputs
+!data/models/metrics.json
+!data/models/curves.json
+
+# ---- Python & Environments ----
 __pycache__/
 *.py[cod]
+*$py.class
+*.so
 *.egg-info/
-.venv/
-.venv-airflow/
+dist/
+build/
+.eggs/
 
-# Spark
+# Virtual Environments
+.venv/
+.venv*/
+venv/
+env/
+ENV/
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# ---- Apache Spark & Hadoop ----
 spark-warehouse/
 metastore_db/
 derby.log
+checkpoint/
 
-# Airflow
+# ---- Apache Airflow ----
 airflow/airflow.db
 airflow/airflow.cfg
 airflow/airflow-webserver.pid
 airflow/logs/
 airflow/webserver_config.py
+airflow/*.pid
 
-# IDE
+# ---- IDEs & Editors ----
 .idea/
 .vscode/
 *.swp
 *.swo
+*.swn
+*~
 
-# OS
+# ---- OS Generated ----
 .DS_Store
 Thumbs.db
+ehthumbs.db
 
-# Models (large files)
-data/models/
-
-# Misc
+# ---- Logs & Environment Secrets ----
 *.log
+train.log
+.env
+.env.*
 .gemini/

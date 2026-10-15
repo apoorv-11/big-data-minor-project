@@ -7,6 +7,10 @@ PY        := $(VENV)/bin/python
 VENV_AF   := .venv-airflow
 PY_AF     := $(VENV_AF)/bin/python
 
+# Explicitly ensure Spark worker processes use the venv Python, not system Python
+export PYSPARK_PYTHON        := $(abspath $(PY))
+export PYSPARK_DRIVER_PYTHON := $(abspath $(PY))
+
 .PHONY: help setup setup-airflow up down bronze silver features gold \
         train predict stream-start stream-stop dashboard test all clean
 
